@@ -1,4 +1,4 @@
-﻿Console.Write("Введите N: ");
+﻿Console.Write("Введите размерность квадратной матрицы: ");
 int n = int.Parse(Console.ReadLine());
 
 int[,] matrix = new int[n, n];

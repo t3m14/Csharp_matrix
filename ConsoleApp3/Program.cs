@@ -1,51 +1,47 @@
-﻿using System.Numerics;
+﻿using System;
 
-Console.WriteLine("Введите N");
-int m = Convert.ToInt32(Console.ReadLine());
-Console.WriteLine("Введите M");
-int n = Convert.ToInt32(Console.ReadLine());
-int[,] matr = new int[n, m];
-for (int i = 0; i < n; i++)
+class Program
 {
-    string row_text = Console.ReadLine();
-    if (row_text != null && row_text.Length > 0)
+    static void Main()
     {
-        string[] row = row_text.Split(" ");
-        if (row.Length == m)
+        int rows, cols,
+            maxValue = int.MinValue, // максимальное значение, изначально установлено на самое низкое возможное число
+            maxRow = 0, // номер строки с максимальным элементом
+            maxCol = 0; // номер столбца с максимальным элементом
+
+        Console.Write("Введите количество строк матрицы: ");
+        while (!int.TryParse(Console.ReadLine(), out rows))
         {
-            for (int j = 0; j < m; j++)
+            Console.WriteLine("Некорректный ввод. Введите число строк.");
+        }
+
+        Console.Write("Введите количество столбцов матрицы: ");
+        while (!int.TryParse(Console.ReadLine(), out cols))
+        {
+            Console.WriteLine("Некорректный ввод. Введите число столбцов.");
+        }
+
+        int[,] matrix = new int[rows, cols]; // создаем матрицу
+
+        for (int i = 0; i < rows; i++)
+        {
+            string[] row = Console.ReadLine().Split(' ');
+            for (int j = 0; j < cols; j++)
             {
-                matr[i, j] = Convert.ToInt32(row[j]);
+                matrix[i, j] = int.Parse(row[j]);
+                if (matrix[i, j] > maxValue)
+                {
+                    maxValue = matrix[i, j];
+                    maxRow = i;
+                    maxCol = j;
+                }
             }
+        }
 
-        }
+
+        // выводим информацию о максимальном элементе
+        Console.WriteLine("Максимальный элемент матрицы: {0}", maxValue);
+        Console.WriteLine("Номер строки: {0}", maxRow);
+        Console.WriteLine("Номер столбца: {0}", maxCol);
     }
 }
-int highest = -999999999;
-for (int i = 0; i < n; i++)
-{
-    for (int j = 0; j < m; j++)
-    {
-        if (matr[i, j] > highest)
-        {
-            highest = matr[i, j];
-        }
-    }
-}
-for (int i = 0; i < n; i++)
-{
-    for (int j = 0; j < m; j++)
-    {
-        if (matr[i, j] == highest)
-        {
-            Console.WriteLine();
-            Console.Write("x: ");
-            Console.Write(j + 1);
-            Console.Write(" ");
-            Console.Write("y: ");
-            Console.Write(i + 1);
-            Console.WriteLine();
-        }
-    }
-}
-Console.ReadKey();

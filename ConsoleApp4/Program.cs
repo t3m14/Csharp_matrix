@@ -1,51 +1,57 @@
-﻿using System.Numerics;
+﻿using System;
 
-Console.WriteLine("Введите N");
-int m = Convert.ToInt32(Console.ReadLine());
-Console.WriteLine("Введите M");
-int n = Convert.ToInt32(Console.ReadLine());
-int[,] matr = new int[n, m];
-for (int i = 0; i < n; i++)
+class Program
 {
-    string row_text = Console.ReadLine();
-    if (row_text != null && row_text.Length > 0)
+    static void Main(string[] args)
     {
-        string[] row = row_text.Split(" ");
-        if (row.Length == m)
+        // Запрос ввода количества строк и столбцов матрицы
+        Console.WriteLine("Введите количество строк матрицы:");
+        int n = int.Parse(Console.ReadLine()); // Преобразуем введенную строку в число
+        Console.WriteLine("Введите количество столбцов матрицы:");
+        int m = int.Parse(Console.ReadLine()); // Преобразуем введенную строку в число
+
+        // Создание двумерного массива заданного размера и заполнение его числами, введенными с клавиатуры
+        int[,] matrix = new int[n, m];
+        Console.WriteLine("Введите элементы матрицы:");
+        for (int i = 0; i < n; i++)
+        {
+            string[] row = Console.ReadLine().Split(' ');
+            for (int j = 0; j < m; j++)
+            {
+                matrix[i, j] = int.Parse(row[j]);
+            }
+        }
+
+
+        // Поиск максимального четного элемента матрицы
+        int max = int.MinValue; // Задаем начальное значение максимального элемента
+        int rowMax = 0; // Строка, в которой находится максимальный элемент
+        int colMax = 0; // Столбец, в котором находится максимальный элемент
+        for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
             {
-                matr[i, j] = Convert.ToInt32(row[j]);
+                if (matrix[i, j] % 2 == 0 && matrix[i, j] > max) // Поиск максимального четного элемента матрицы
+                {
+                    max = matrix[i, j];
+                    rowMax = i;
+                    colMax = j;
+                }
             }
+        }
 
-        }
-    }
-}
-int highest = -999999999;
-for (int i = 0; i < n; i++)
-{
-    for (int j = 0; j < m; j++)
-    {
-        if (matr[i, j] > highest && matr[i, j] % 2 == 0)
+        // Вывод результата
+        if (max != int.MinValue) // Проверка на наличие четных элементов
         {
-            highest = matr[i, j];
+            Console.WriteLine($"Максимальный четный элемент матрицы: {max}"); // Вывод максимального четного элемента
+            Console.WriteLine($"Номер строки: {rowMax + 1}"); // Вывод номера строки, в которой находится максимальный элемент
+            Console.WriteLine($"Номер столбца: {colMax + 1}"); // Вывод номера столбца, в котором находится максимальный элемент
         }
-    }
-}
-for (int i = 0; i < n; i++)
-{
-    for (int j = 0; j < m; j++)
-    {
-        if (matr[i, j] == highest)
+        else // Если четных элементов в матрице нет
         {
-            Console.WriteLine();
-            Console.Write("x: ");
-            Console.Write(j + 1);
-            Console.Write(" ");
-            Console.Write("y: ");
-            Console.Write(i + 1);
-            Console.WriteLine();
+            Console.WriteLine("Четных элементов в матрице нет.");
         }
+
+        Console.ReadLine(); // Задержка консоли
     }
 }
-Console.ReadKey();

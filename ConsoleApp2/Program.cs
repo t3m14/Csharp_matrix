@@ -1,49 +1,55 @@
-﻿using System.Numerics;
+﻿using System;
 
-Console.WriteLine("Введите M");
-int m = Convert.ToInt32(Console.ReadLine());
-Console.WriteLine("Введите N");
-int n = Convert.ToInt32(Console.ReadLine());
-int[,] matr = new int[n, m];
-for (int i = 0; i < n; i++)
+class Program
 {
-    string row_text = Console.ReadLine();
-    if (row_text != null && row_text.Length > 0)
+    static void Main()
     {
-        string[] row = row_text.Split(" ");
-        if (row.Length == m)
+        try
         {
-            for (int j = 0; j < m; j++)
+            int n, m;
+            Console.Write("Введите кол-во строк: ");
+            while (!int.TryParse(Console.ReadLine(), out n))
             {
-                matr[i, j] = Convert.ToInt32(row[j]);
+                Console.WriteLine("Некорректный ввод, попробуйте еще раз.");
+                Console.Write("Введите кол-во строк: ");
+            }
+            Console.Write("Введите кол-во столбцов: ");
+            while (!int.TryParse(Console.ReadLine(), out m))
+            {
+                Console.WriteLine("Некорректный ввод, попробуйте еще раз.");
+                Console.Write("Введите кол-во столбцов: ");
+            }
+            int[,] matrix = new int[n, m];
+            Console.WriteLine("Введите матрицу:");
+
+            // заполнение матрицы элементами
+            for (int i = 0; i < n; i++)
+            {
+                string[] row = Console.ReadLine().Split(' ');
+                for (int j = 0; j < m; j++)
+                {
+                    matrix[i, j] = int.Parse(row[j]);
+                }
             }
 
+            int minValue = int.MaxValue;
+            int minIndex = 0;
+            for (int i = 0; i < n; i++) // перебор всех строк
+            {
+                // перебор всех правых элементов
+                if (matrix[i, minIndex] <= minValue)
+                {
+                    minValue = matrix[i, m - 1];
+                    minIndex = i;
+                    
+                }
+                
+            }
+                Console.WriteLine($"В столбце {m - 1} наименьший элемент: {minValue} находится в строке {minIndex + 1}");
+        }
+        catch (FormatException) // обработка ошибки - неверный формат ввода
+        {
+            Console.WriteLine("Неверный формат ввода. Попробуйте еще раз.");
         }
     }
 }
-int lowest = 999999999;
-for (int i = 0; i < n; i++)
-{
-       
-    if (matr[i, m - 1] < lowest)
-    {
-        lowest = matr[i, m - 1];
-    }
-    
-}
-for (int i = 0; i < n; i++)
-{
-    
-    if (matr[i, m - 1] == lowest)
-    {
-        Console.WriteLine();
-        Console.Write("x: ");
-        Console.Write(m);
-        Console.Write(" ");
-        Console.Write("y: ");
-        Console.Write(i + 1);
-        Console.WriteLine();
-    }
-    
-}
-Console.ReadKey();

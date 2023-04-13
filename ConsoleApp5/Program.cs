@@ -1,44 +1,42 @@
-﻿using System.Numerics;
+﻿using System;
 
-Console.WriteLine("Введите N");
-int m = Convert.ToInt32(Console.ReadLine());
-Console.WriteLine("Введите M");
-int n = Convert.ToInt32(Console.ReadLine());
-int[,] matrix = new int[n, m];
-for (int i = 0; i < n; i++)
+class MainClass
 {
-    string row_text = Console.ReadLine();
-    if (row_text != null && row_text.Length > 0)
+    public static void Main(string[] args)
     {
-        string[] row = row_text.Split(" ");
-        if (row.Length == m)
+        Console.Write("Введите количество строк в матрице: ");
+        int n = int.Parse(Console.ReadLine()); //ввод количества строк матрицы
+        Console.Write("Введите количество столбцов в матрице: ");
+        int m = int.Parse(Console.ReadLine()); //ввод количества столбцов матрицы
+        int[,] matrix = new int[n, m];
+        Console.WriteLine("Введите элементы матрицы:");
+        for (int i = 0; i < n; i++)
         {
+            string[] row = Console.ReadLine().Split(' ');
             for (int j = 0; j < m; j++)
             {
-                matrix[i, j] = Convert.ToInt32(row[j]);
+                matrix[i, j] = int.Parse(row[j]);
             }
-
         }
-    }
-}
-List<int> duplicates = new List<int>();
 
-for (int i = 0; i < matrix.GetLength(0) - 1; i++)
-{
-    for (int j = i + 1; j < matrix.GetLength(0); j++)
-    {
-        for (int k = 0; k < matrix.GetLength(1); k++)
-        {
-            if (matrix[i, k] == matrix[j, k] && !duplicates.Contains(matrix[i, k]))
+        int count = 0; //переменная для хранения количества одинаковых элементов матрицы
+        Console.WriteLine("Одинаковые элементы матрицы на четных строках:");
+
+        for (int i = 0; i < n; i += 2)
+        { //перебираются элементы матрицы на чётных строках
+            for (int j = 0; j < m; j++)
             {
-                duplicates.Add(matrix[i, k]);
+                for (int k = 0; k < m; k++)
+                { //ищутся одинаковые элементы
+                    if (matrix[i, j] == matrix[i, k] && j != k)
+                    {
+                        Console.WriteLine(matrix[i, j]); //если элементы одинаковы и находятся на чётной строке, то они выводятся на экран
+                        count++; //увеличивается счётчик одинаковых элементов
+                    }
+                }
             }
         }
+
+        Console.WriteLine("Количество одинаковых элементов матрицы: {0}", count); //вывод количества одинаковых элементов
     }
 }
-foreach (int duplicate in duplicates)
-{
-    Console.WriteLine(duplicate);
-}
-
-Console.ReadKey();
