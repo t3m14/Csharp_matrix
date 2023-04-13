@@ -1,32 +1,62 @@
-﻿Console.Write("Введите размерность квадратной матрицы: ");
-int n = int.Parse(Console.ReadLine());
+﻿using System;
 
-int[,] matrix = new int[n, n];
-Random random = new Random();
-
-Console.WriteLine("Сгенерированная матрица:");
-for (int i = 0; i < n; i++)
+namespace MatrixMultiplication
 {
-    for (int j = 0; j < n; j++)
+    class Program
     {
-        matrix[i, j] = random.Next(10);
-        Console.Write(matrix[i, j] + " ");
+        static void Main(string[] args)
+        {
+            try
+            {
+                Console.WriteLine("Введите количество строк в матрице:");
+                int n = int.Parse(Console.ReadLine());
+                Console.WriteLine("Введите количество столбцов в матрице:");
+                int m = int.Parse(Console.ReadLine());
+
+                int[,] matrix = new int[n, m];
+
+                Random random = new Random();
+
+                Console.WriteLine($"Матрица {n}x{m}:");
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        matrix[i, j] = random.Next(-10, 11); // заполняем матрицу случайными числами от -10 до 10
+                        Console.Write(matrix[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine("Выберите строку для вычисления произведения:");
+                int row = int.Parse(Console.ReadLine()) - 1; // вычитаем 1, так как в программировании индексация начинается с 0
+
+                int sumOfDiagonal = 0;
+                int sumOfRow = 0;
+
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        if (i == j) // если элемент на главной диагонали
+                        {
+                            sumOfDiagonal += matrix[i, j]; // добавляем его значение к сумме главной диагонали
+                        }
+                        if (i == row) // если элемент на выбранной пользователем строке
+                        {
+                            sumOfRow += matrix[i, j]; // добавляем его значение к сумме элементов в строке
+                        }
+                    }
+                }
+
+                Console.WriteLine($"Произведение суммы элементов главной диагонали ({sumOfDiagonal}) на сумму элементов {row + 1}-ой строки ({sumOfRow}):");
+                int multiplication = sumOfDiagonal * sumOfRow;
+                Console.WriteLine(multiplication);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ошибка ввода. " + e.Message);
+            }
+        }
     }
-    Console.WriteLine();
 }
-
-Console.Write("Введите номер строки: ");
-int rowNumber = int.Parse(Console.ReadLine()) - 1;
-
-int sumDiagonal = 0;
-for (int i = 0; i < n; i++)
-    sumDiagonal += matrix[i, i];
-
-int sumRow = 0;
-for (int j = 0; j < n; j++)
-    sumRow += matrix[rowNumber, j];
-
-int result = sumDiagonal * sumRow;
-Console.WriteLine("Произведение суммы элементов главной диагонали и суммы элементов {0}-ой строки равно {1}", rowNumber + 1, result);
-
-Console.ReadKey();

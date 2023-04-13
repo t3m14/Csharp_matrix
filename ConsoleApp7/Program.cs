@@ -50,7 +50,7 @@
         if (average > maxDiagonal)
         {
             Console.WriteLine($"Среднее арифметическое в строке {i} больше максимального элемента на главной диагонали ({maxDiagonal})");
-        }
+        } 
     }
 }
 catch (FormatException ex)
